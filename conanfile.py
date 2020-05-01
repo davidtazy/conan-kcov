@@ -43,7 +43,7 @@ conan_basic_setup()''')
 
             
             if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-                pass #required_package.append(  "binutils-dev")
+                required_package.append(  "binutils-dev")
             elif tools.os_info.linux_distro in ["fedora", "centos", "opensuse"]:
                 required_package.append(  "binutils-devel")
             elif tools.os_info.linux_distro == "arch":
@@ -51,11 +51,10 @@ conan_basic_setup()''')
             elif tools.os_info.is_freebsd:
                 required_package.append(  "libbfd")
         
-        for req_package in required_package:
-            print("install {}".format(req_package))
-            installer = tools.SystemPackageTool()
-            if not installer.installed(req_package):
-                raise ConanInvalidConfiguration("kcov requires {}.".format(req_package))
+        
+        installer = tools.SystemPackageTool()
+        installer.install(required_package)
+                
 
 
     def build(self):
