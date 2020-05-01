@@ -26,6 +26,7 @@ jobs:
     - name: create  and  test package step by step
       run: |
         conan --version
+        conan profile new default --detect
         conan profile update settings.compiler.libcxx=libstdc++11 default
         conan install cmake/3.16.3 -g=virtualenv
         source activate.sh
