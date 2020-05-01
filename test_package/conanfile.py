@@ -17,4 +17,4 @@ class KcovTestConan(ConanFile):
     def test(self):
         if not tools.cross_building(self.settings):
             #os.chdir("bin")
-            self.run("kcov --include-path=${CMAKE_CURRENT_LIST_DIR} cov ./bin/example")
+            self.run("kcov --exclude-pattern=/usr/ --include-path=${CMAKE_CURRENT_LIST_DIR} cov ./example")
