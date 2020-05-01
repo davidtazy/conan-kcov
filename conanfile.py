@@ -30,7 +30,7 @@ conan_basic_setup()''')
 
     def system_requirements(self):
         required_package = None
-        if 0: # self.settings.os == "Linux": #does not work for me
+        if  self.settings.os == "Linux": #does not work for me
         
             if tools.os_info.linux_distro in ["ubuntu", "debian"]:
                 required_package = "libdw-dev"
