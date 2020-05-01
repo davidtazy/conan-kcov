@@ -29,32 +29,33 @@ include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
 
     def system_requirements(self):
-        required_package = None
+        required_package = []
         if  self.settings.os == "Linux": #does not work for me
         
             if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-                required_package = "libdw-dev"
+                required_package.append( "libdw-dev" )
             elif tools.os_info.linux_distro in ["fedora", "centos"]:
-                required_package = "elfutils-libs"
+                required_package.append(  "elfutils-libs")
             elif tools.os_info.linux_distro == "opensuse":
-                required_package = "libdw-devel"
+                required_package.append( "libdw-devel")
             elif tools.os_info.linux_distro == "arch":
-                required_package = "libelf"
+                required_package.append(  "libelf" )
 
             
             if tools.os_info.linux_distro in ["ubuntu", "debian"]:
-                required_package = "binutils-dev"
+                pass #required_package.append(  "binutils-dev")
             elif tools.os_info.linux_distro in ["fedora", "centos", "opensuse"]:
-                required_package = "binutils-devel"
+                required_package.append(  "binutils-devel")
             elif tools.os_info.linux_distro == "arch":
-                required_package = "binutils"
+                required_package.append(  "binutils")
             elif tools.os_info.is_freebsd:
-                required_package = "libbfd"
+                required_package.append(  "libbfd")
         
-        if required_package != None:
+        for req_package in required_package:
+            print("install {}".format(req_package))
             installer = tools.SystemPackageTool()
-            if not installer.installed(required_package):
-                raise ConanInvalidConfiguration("kcov requires {}.".format(required_package))
+            if not installer.installed(req_package):
+                raise ConanInvalidConfiguration("kcov requires {}.".format(req_package))
 
 
     def build(self):
