@@ -16,7 +16,7 @@ conan build . --source-folder=tmp/source --build-folder=tmp/build
 conan package . --source-folder=tmp/source --build-folder=tmp/build --package-folder=tmp/package
 
 #make it available locally
-conan export-pkg . user/channel --source-folder=tmp/source --build-folder=tmp/build --profile=default
+conan export-pkg . davidtazy/testing --source-folder=tmp/source --build-folder=tmp/build --profile=default
 
 #test it
 conan test ./test_package kcov/0.0.0@davidtazy/testing
