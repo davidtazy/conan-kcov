@@ -7,12 +7,12 @@ class KcovConan(ConanFile):
     version = "0.0.0"
     license = "<Put the package license here>"
     author = "davidtazy"
-    url = "<Package recipe repository url here, for issues about the package>"
-    description = "<Description of Kcov here>"
+    url = "https://github.com/davidtazy/conan-kcov"
+    description = "Code coverage tool for compiled programs, Python and Bash which uses debugging information to collect and report data without special compilation options"
     topics = ("coverage", "linux", "debug")
-    settings = "os", "compiler", "build_type", "arch" #todo
-    options = {"shared": [True, False]}
-    default_options = {"shared": False}
+    settings = "os", "compiler", "build_type", "arch" 
+    #options = {"shared": [True, False]}
+    #default_options = {"shared": False}
     requires = ["zlib/1.2.11",
                 "libiberty/9.1.0",
                 "libcurl/7.64.1"]
@@ -24,9 +24,7 @@ class KcovConan(ConanFile):
 
     def source(self):
         self.run("git clone https://github.com/davidtazy/kcov.git")
-        # This small hack might be useful to guarantee proper /MT /MD linkage
-        # in MSVC if the packaged project doesn't have variables to set it
-        # properly
+        #inject conan deps
         tools.replace_in_file("kcov/CMakeLists.txt", "project (kcov)",
                               '''project (kcov)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
@@ -34,7 +32,7 @@ conan_basic_setup()''')
 
     def system_requirements(self):
         required_package = []
-        if  self.settings.os == "Linux": #does not work for me
+        if  self.settings.os == "Linux": 
         
             if tools.os_info.linux_distro in ["ubuntu", "debian"]:
                 required_package.append( "libdw-dev" )
