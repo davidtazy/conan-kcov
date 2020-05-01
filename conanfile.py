@@ -18,6 +18,10 @@ class KcovConan(ConanFile):
                 "libcurl/7.64.1"]
     generators = "cmake"
 
+    def configure(self):
+        if self.settings.compiler == "Visual Studio":
+            raise ConanInvalidConfiguration("kcov can not be built by Visual Studio.")
+
     def source(self):
         self.run("git clone https://github.com/davidtazy/kcov.git")
         # This small hack might be useful to guarantee proper /MT /MD linkage
