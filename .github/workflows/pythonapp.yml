@@ -23,9 +23,10 @@ jobs:
         python -m pip install --upgrade pip
         pip install conan
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-    - name: Lint with flake8
+    - name: create  and  test package step by step
       run: |
         conan --version
+        bash workflow.sh
     - name: Test with pytest
       run: |
         true
