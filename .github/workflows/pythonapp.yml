@@ -28,7 +28,7 @@ jobs:
         conan --version
         conan profile new default --detect
         conan profile update settings.compiler.libcxx=libstdc++11 default
-        conan install cmake/3.16.3 -g=virtualenv
+        conan install cmake_installer/3.16.3@conan/stable  -g=virtualenv
         source activate.sh
         bash workflow.sh
     - name: Test with pytest
