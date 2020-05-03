@@ -5,7 +5,7 @@ import os
 class KcovConan(ConanFile):
     name = "kcov"
     version = "0.0.0"
-    license = "<Put the package license here>"
+    license = "GPL-2.0"
     author = "davidtazy"
     url = "https://github.com/davidtazy/conan-kcov"
     description = "Code coverage tool for compiled programs, Python and Bash which uses debugging information to collect and report data without special compilation options"
@@ -65,7 +65,10 @@ conan_basic_setup()''')
         cmake.build()
 
     def package(self):
-        self.copy("*", dst="bin", src="bin")
+        cmake = CMake(self)
+        cmake.configure(source_folder="kcov")
+        cmake.install()
+
     def package_info(self):
         self.env_info.PATH.append(os.path.join(self.package_folder, "bin"))
 
