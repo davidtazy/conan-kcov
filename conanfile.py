@@ -65,12 +65,12 @@ class KcovConan(ConanFile):
     def build(self):
         self._patch_sources()
         cmake = CMake(self)
-        cmake.configure(source_folder=self._source_subfolder)
+        cmake.configure( build_folder=self._build_subfolder)
         cmake.build()
 
     def package(self):
         cmake = CMake(self)
-        cmake.configure(source_folder=self._source_subfolder)
+        cmake.configure( build_folder=self._build_subfolder)
         cmake.install()
 
     def package_info(self):
