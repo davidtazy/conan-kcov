@@ -11,8 +11,8 @@ class KcovConan(ConanFile):
     description = "Code coverage tool for compiled programs, Python and Bash which uses debugging information to collect and report data without special compilation options"
     topics = ("coverage", "linux", "debug")
     settings = "os", "compiler", "build_type", "arch" 
-    #options = {"shared": [True, False]}
-    #default_options = {"shared": False}
+    
+    exports_sources = "CMakeLists.txt", "patches/**"
     requires = ["zlib/1.2.11",
                 "libiberty/9.1.0",
                 "libcurl/7.64.1"]
@@ -29,11 +29,7 @@ class KcovConan(ConanFile):
         tools.get(**self.conan_data["sources"][self.version])
         extracted_dir = self.name + "-" + self.version
         os.rename(extracted_dir, self._source_subfolder)
-        #inject conan deps
-        tools.replace_in_file(os.path.join(self._source_subfolder,"CMakeLists.txt"), "project (kcov)",
-                              '''project (kcov)
-include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
-conan_basic_setup()''')
+        
 
     def system_requirements(self):
         required_package = []
@@ -62,9 +58,12 @@ conan_basic_setup()''')
         installer = tools.SystemPackageTool()
         installer.install(required_package)
                 
-
+    def _patch_sources(self):   
+        for patch in self.conan_data["patches"][self.version]:
+            tools.patch(**patch)
 
     def build(self):
+        self._patch_sources()
         cmake = CMake(self)
         cmake.configure(source_folder=self._source_subfolder)
         cmake.build()
