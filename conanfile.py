@@ -4,7 +4,7 @@ import os
 
 class KcovConan(ConanFile):
     name = "kcov"
-    version = "0.0.0"
+    version = "38"
     license = "GPL-2.0"
     author = "davidtazy"
     url = "https://github.com/davidtazy/conan-kcov"
@@ -18,14 +18,19 @@ class KcovConan(ConanFile):
                 "libcurl/7.64.1"]
     generators = "cmake"
 
+    _source_subfolder = "source_subfolder"
+    _build_subfolder = "build_subfolder"
+
     def configure(self):
         if self.settings.compiler == "Visual Studio":
             raise ConanInvalidConfiguration("kcov can not be built by Visual Studio.")
 
     def source(self):
-        self.run("git clone https://github.com/davidtazy/kcov.git")
+        tools.get(**self.conan_data["sources"][self.version])
+        extracted_dir = self.name + "-" + self.version
+        os.rename(extracted_dir, self._source_subfolder)
         #inject conan deps
-        tools.replace_in_file("kcov/CMakeLists.txt", "project (kcov)",
+        tools.replace_in_file(os.path.join(self._source_subfolder,"CMakeLists.txt"), "project (kcov)",
                               '''project (kcov)
 include(${CMAKE_BINARY_DIR}/conanbuildinfo.cmake)
 conan_basic_setup()''')
@@ -61,12 +66,12 @@ conan_basic_setup()''')
 
     def build(self):
         cmake = CMake(self)
-        cmake.configure(source_folder="kcov")
+        cmake.configure(source_folder=self._source_subfolder)
         cmake.build()
 
     def package(self):
         cmake = CMake(self)
-        cmake.configure(source_folder="kcov")
+        cmake.configure(source_folder=self._source_subfolder)
         cmake.install()
 
     def package_info(self):
