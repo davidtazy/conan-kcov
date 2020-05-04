@@ -23,7 +23,7 @@ class KcovConan(ConanFile):
             raise ConanInvalidConfiguration("kcov can not be built by Visual Studio.")
 
     def source(self):
-        self.run("git clone https://github.com/davidtazy/kcov.git")
+        self.run("git clone https://github.com/SimonKagstrom/kcov.git")
         #inject conan deps
         tools.replace_in_file("kcov/CMakeLists.txt", "project (kcov)",
                               '''project (kcov)
